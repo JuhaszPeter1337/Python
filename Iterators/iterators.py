@@ -1,6 +1,7 @@
 # This class provides basic implementations for the .__iter__() method.
 from collections.abc import Iterator
 from typing import Any
+from itertools import count
 
 #.__iter__(): Called to initialize the iterator. It must return an iterator object.
 #.__next__(): Called to iterate over the iterator. It must return the next value in the data stream.
@@ -17,6 +18,16 @@ if __name__ == "__main__":
     print(next(my_iterator))
     print(next(my_iterator))
     print(next(my_iterator))
+'''
+
+# Python Infinite Iterators
+'''
+if __name__ == "__main__":
+    # Syntax: itertools.count(start=0, step=1)
+    infinite_iterator = count(1,2)
+
+    for i in range(0, 5):
+        print(next(infinite_iterator))
 '''
 
 # Creating iterator class from scratch
