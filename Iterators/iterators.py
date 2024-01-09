@@ -217,3 +217,63 @@ if __name__ == "__main__":
     fibonacci_series = [number for number in fibonacci_generator(30)]
     print(fibonacci_series)
 '''
+
+# Creating a Data Processing Pipeline With Generator Iterators
+'''
+def to_square(numbers):
+    return (item ** 2 for item in numbers)
+
+def if_even(numbers):
+    return (item % 2 == 0 for item in numbers)
+
+def to_even(numbers):
+    return (item for item in numbers if item % 2 == 0)
+
+def to_string(numbers):
+    return (str(item) for item in numbers)
+
+if __name__ == "__main__":
+    for item in to_square([1, 2, 3, 4, 5]):
+        print(item)
+    for item in if_even([1, 2, 3, 4, 5]):
+        print(item)
+    for item in to_even([1, 2, 3, 4, 5]):
+        print(item)
+'''
+
+# Constraints
+'''
+The first and probably the most overlooked constraint is that you can't iterate over an iterator more than once.
+Another constraint of iterators is that they only define the .__next__() method, which gets the next item each time.
+There's no .__previous__() method or anything like that. This means that you can only move forward through an iterator. You can't move backward.
+Because iterators only keep one item in memory at a time, you can't know their length or number of items, which is another limitation.
+If your iterator isn't infinite, then you'll only know its length when yo've consumed all its data.
+Finally, unlike lists and tuples, iterators don't allow indexing and slicing operations with the [] operator
+'''
+
+# Reusable iterator
+'''
+class ReusableRange:
+    def __init__(self, start=0, stop=None, step=1):
+        if stop is None:
+            stop, start = start, 0
+        self._range = range(start, stop, step)
+        self._iter = iter(self._range)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        try:
+            return next(self._iter)
+        except StopIteration:
+            self._iter = iter(self._range)
+            raise
+
+if __name__ == "__main__":
+    my_iter = ReusableRange(5)
+    for item in my_iter:
+        print(item)
+    for item in my_iter:
+        print(item)
+'''
