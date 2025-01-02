@@ -5,6 +5,7 @@ def product_method(iterable1: List, iterable2: List) -> None:
     result = product(iterable1, iterable2)
     print(list(result))
 
+# Factorial
 def permutations_method(iterable: List | str, size: int) -> None:
     perm = permutations(iterable, size)
     print(list(perm))
