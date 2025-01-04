@@ -2,12 +2,13 @@
 from collections.abc import Iterator
 from typing import Any
 from itertools import count
+import time
 
 #.__iter__(): Called to initialize the iterator. It must return an iterator object.
 #.__next__(): Called to iterate over the iterator. It must return the next value in the data stream.
 
 # Creating iterator and looping through
-'''
+"""
 if __name__ == "__main__":
     my_list = [1, 4, 7]
 
@@ -15,10 +16,14 @@ if __name__ == "__main__":
     
     print(my_iterator)
     print(my_iterator.__next__())
-    print(next(my_iterator))
-    print(next(my_iterator))
-    print(next(my_iterator))
-'''
+    try:
+        print(next(my_iterator))
+        print(next(my_iterator))
+        print(next(my_iterator))
+    # StopIteration doesn't carry a detailed message so we need own print method.
+    except StopIteration:
+        print("The iterator is exhausted.")
+"""
 
 # Python Infinite Iterators
 '''
@@ -31,7 +36,7 @@ if __name__ == "__main__":
 '''
 
 # Creating iterator class from scratch
-'''
+"""
 class SequenceIterator:
     def __init__(self, sequence) -> None:
         self._sequence = sequence
@@ -49,16 +54,24 @@ class SequenceIterator:
             raise StopIteration
         
 if __name__ == "__main__":
+    my_list = [10, 20, 30]
+
+    #Here, my_iter is already an iterator (as SequenceIterator implements both __iter__ and __next__).
+    #When you call next(my_iter), Python directly uses the __next__ method. It doesn’t call __iter__ because it’s not starting an iteration.
     my_iter = SequenceIterator(my_list)
-    next(my_iter)
+    first_elem = next(my_iter)
+    print(first_elem)
     print(next(my_iter))
 
+    #In this case, SequenceIterator([1, 2, 3, 4]) is passed to the for loop.
+    #The for loop internally calls iter(SequenceIterator([1, 2, 3, 4])), which invokes the __iter__ method.
+    #The __iter__ method returns the iterator object itself (i.e., the SequenceIterator instance).
     for iter in SequenceIterator([1, 2, 3, 4]):
         print(iter)
-'''
+"""
 
 # Creating Square iterator
-'''
+"""
 class SquareIterator:
     def __init__(self, sequence) -> None:
         self._sequence = sequence
@@ -72,16 +85,15 @@ class SquareIterator:
             square = self._sequence[self._index] ** 2
             self._index += 1
             return square
-        else:
-            raise StopIteration
+        raise StopIteration
         
 if __name__ == "__main__":
     for square in SquareIterator([1, 2, 3, 4, 5]):
         print(square)
-'''
+"""
 
 # Creating Fibonacci iterator
-'''
+"""
 class FibonacciIterator:
     def __init__(self, stop = 10) -> None:
         self._stop = stop
@@ -106,10 +118,10 @@ class FibonacciIterator:
 if __name__ == "__main__":
     for fib in FibonacciIterator():
         print(fib)
-'''
+"""
 
 # Creating infinite Fibonacci iterator
-'''
+"""
 class InfiniteFibonacciIterator:
     def __init__(self) -> None:
         self._index = 0
@@ -131,7 +143,8 @@ class InfiniteFibonacciIterator:
 if __name__ == "__main__":
     for fib in InfiniteFibonacciIterator():
         print(fib)
-'''
+        time.sleep(1)
+"""
 
 # Inheriting from collections.abc.Iterator
 '''
@@ -140,6 +153,7 @@ class SequenceIterator(Iterator):
         self._sequence = sequence
         self._index = 0
 
+    # No need for own .__iter__() method, the class provides basic implementations for the .__iter__() method.
     def __next__(self) -> Any:
         if self._index < len(self._sequence):
             item = self._sequence[self._index]
